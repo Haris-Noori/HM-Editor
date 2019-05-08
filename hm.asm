@@ -8,6 +8,14 @@
 include irvine32.inc
 include macros.inc
 INCLUDELIB user32.lib
+;includelib irvine32.lib
+
+BufSize = 80		; defining buffer size
+
+.data
+	buffer BYTE BufSize DUP(?),0,0
+	stdInHandle DWORD ?
+	bytesRead   DWORD ?
 
 ;BufSize = 80		; defining buffer size
 
@@ -41,6 +49,7 @@ main PROC
     mWrite "|------------------------------|"
     mGotoxy 30, 9
     mWrite "| HM Editor                    |"
+    mWrite "| HM Text Editor               |"
     mGotoxy 30, 10
     mWrite "| Developed by:                |"
     mGotoxy 30, 11
@@ -126,6 +135,7 @@ main PROC
     call WaitMsg
     call ClrScr
 
+<<<<<<< HEAD
     
     call crlf
     mov edx, OFFSET msg
@@ -135,8 +145,78 @@ main PROC
     sub eax, ebx
     call WriteInt
 
+=======
+    call initTextArea
+    call GetInput
+>>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
 
 exit
 
 main endp
+
+initTextArea PROC 
+
+	mGotoxy 30, 2
+	mWrite "Start Entering Text !!!"
+	mGotoxy 0, 5
+
+	ret
+
+initTextArea ENDP
+
+; GetKeyInput PROC 
+
+; 	; Taking input using readkey
+
+; 	mov ecx, BufSize
+; 	mov ebx, 0
+
+; 	getInput:
+
+; 		;call readkey
+; 		jz nextKey
+
+; 		mov buffer[ebx], al
+; 		call writechar
+; 		call crlf
+
+
+; 		nextKey:
+
+
+; 	loop getInput
+
+; GetKeyInput ENDP
+
+GetInput PROC
+
+	; Get handle to standard input
+	INVOKE GetStdHandle, STD_INPUT_HANDLE
+	mov stdInHandle,eax
+
+	; Wait for user input
+	INVOKE ReadConsole, stdInHandle, ADDR buffer,
+	  BufSize, ADDR bytesRead, 0
+
+	; Display the buffer
+	;mov  esi,OFFSET buffer
+	;mov  ecx,16	; 16 bytes
+	;mov  ebx,TYPE buffer
+	;call DumpMem
+
+
+	;printing buffer
+
+	call crlf 
+	call crlf
+
+	mov edx, offset buffer
+	call writestring
+	call crlf
+	mov eax, bytesRead
+	call writedec
+
+	ret
+GetInput ENDP
+
 end main
