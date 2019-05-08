@@ -20,7 +20,7 @@ main PROC
     mGotoxy 30, 8
     mWrite "|------------------------------|"
     mGotoxy 30, 9
-    mWrite "| HM Text Editor                    |"
+    mWrite "| HM Text Editor               |"
     mGotoxy 30, 10
     mWrite "| Developed by:                |"
     mGotoxy 30, 11
