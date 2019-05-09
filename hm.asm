@@ -1,4 +1,4 @@
-;ustaad        me
+;GHAURI        HARIS
 ;BufSize       BUFSIZE
 ;buffer        buffer
 ;stdInHandle   fileHnadle
@@ -10,7 +10,7 @@ include macros.inc
 INCLUDELIB user32.lib
 ;includelib irvine32.lib
 
-
+;________________________DATA SEGMENT_______________________________________|
 .data
 
     MAX = 128                    ;max chars to read
@@ -31,9 +31,10 @@ INCLUDELIB user32.lib
     ;.....................................................
 
     key BYTE ?
-    
+
+;___________________________CODE SEGMENT_____________________________________|
 .code 
-main PROC
+main PROC;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     call GetMseconds
     mov ebx, eax
 
@@ -79,42 +80,17 @@ main PROC
 
     write_in_file:
     ;...WRITE FILE CODE STARTS HERE.......................................................
-    call initTextArea
-    call GetInput
+      call initTextArea
+      call GetInput
 
 
-    jmp QuitNow
-    ;...WRITE FILE CODE STARTS HERE.......................................................
-
-
-    
+      jmp QuitNow
+    ;...WRITE FILE CODE ENDS HERE.......................................................
 
     read_from_file:       
-    ;READ FILE CODE STARTS HERE...............................................
-    INVOKE CreateFile,
-	  ADDR filename, GENERIC_READ, DO_NOT_SHARE, NULL,
-	  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
-
-    mov fileHandle,eax		; save file handle
-    .IF eax == INVALID_HANDLE_VALUE
-      mov  edx,OFFSET errMsg		; Display error message
-      call WriteString
-      jmp  QuitNow
-    .ENDIF
-
-    INVOKE ReadFile,		; write text to file
-	    fileHandle,		; file handle
-	    ADDR buffer,		; buffer pointer
-	    bufSize,		; number of bytes to write
-	    ADDR byteCount,		; number of bytes written
-	    0		; overlapped execution flag
-
-    INVOKE CloseHandle, fileHandle
-
-    mov esi,byteCount		; insert null terminator
-    mov buffer[esi],0		; into buffer
-    mov edx,OFFSET buffer		; display the buffer
-    call WriteString
+    ;READ FILE CODE STARTS HERE.......................................................
+      call GetOutput
+    
     ;............READ FILE CODE ENDS HERE........................................................
 
     QuitNow:
@@ -134,9 +110,9 @@ main PROC
 
 
 exit
-main endp
+main ENDP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-initTextArea PROC;.......................
+initTextArea PROC;..................................
 
 	mGotoxy 30, 2
 	mWrite "Start Entering Text !!!"
@@ -144,11 +120,9 @@ initTextArea PROC;.......................
 
 	ret
 
-initTextArea ENDP;..........................
+initTextArea ENDP;.......................................
 
-
-
-GetInput PROC
+GetInput PROC;.....................................................
 
 	; Get handle to standard input
 	INVOKE GetStdHandle, STD_INPUT_HANDLE
@@ -177,6 +151,37 @@ GetInput PROC
 	call writedec
 
 	ret
-GetInput ENDP
+GetInput ENDP;....................................................
+
+GetOutput PROC;..................................................................
+
+  INVOKE CreateFile,
+	  ADDR filename, GENERIC_READ, DO_NOT_SHARE, NULL,
+	  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
+
+    mov fileHandle,eax		; save file handle
+    .IF eax == INVALID_HANDLE_VALUE
+      mov  edx,OFFSET errMsg		; Display error message
+      call WriteString
+      ret
+      ;jmp  QuitNow
+    .ENDIF
+
+    INVOKE ReadFile,		; write text to file
+	    fileHandle,		; file handle
+	    ADDR buffer,		; buffer pointer
+	    bufSize,		; number of bytes to write
+	    ADDR byteCount,		; number of bytes written
+	    0		; overlapped execution flag
+
+    INVOKE CloseHandle, fileHandle
+
+    mov esi,byteCount		; insert null terminator
+    mov buffer[esi],0		; into buffer
+    mov edx,OFFSET buffer		; display the buffer
+    call WriteString
+
+    ret
+GetOutput ENDP;.......................................................................
 
 end main

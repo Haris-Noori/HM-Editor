@@ -1,8 +1,8 @@
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 17:52:40
+Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 18:26:56
 hm.asm							     Page 1 - 1
 
 
-				;ustaad        me
+				;GHAURI        HARIS
 				;BufSize       BUFSIZE
 				;buffer        buffer
 				;stdInHandle   fileHnadle
@@ -26,7 +26,7 @@ hm.asm							     Page 1 - 1
 				INCLUDELIB user32.lib
 				;includelib irvine32.lib
 
-
+				;________________________DATA SEGMENT_______________________________________|
  00000000			.data
 
  = 00000080			    MAX = 128                    ;max chars to read
@@ -58,9 +58,10 @@ hm.asm							     Page 1 - 1
 				    ;.....................................................
 
  00001446 00			    key BYTE ?
-				    
+
+				;___________________________CODE SEGMENT_____________________________________|
  00000000			.code 
- 00000000			main PROC
+ 00000000			main PROC;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  00000000  E8 00000000 E	    call GetMseconds
  00000005  8B D8		    mov ebx, eax
 
@@ -217,7 +218,6 @@ hm.asm							     Page 1 - 1
  000000B8  B8 000003E8		    mov  eax,1000 
  000000BD  E8 00000000 E	    call Delay
 				    mWrite "Loading ."
-
  0000152E		     1		.data				
  0000152E 4C 6F 61 64 69     1		??0007 BYTE "Loading .",0		
 	   6E 67 20 2E 00
@@ -274,52 +274,26 @@ hm.asm							     Page 1 - 1
 
  0000011F			    write_in_file:
 				    ;...WRITE FILE CODE STARTS HERE.......................................................
- 0000011F  E8 000000BF		    call initTextArea
- 00000124  E8 000000DD		    call GetInput
+ 0000011F  E8 00000054		      call initTextArea
+ 00000124  E8 00000072		      call GetInput
 
 
- 00000129  EB 70		    jmp QuitNow
-				    ;...WRITE FILE CODE STARTS HERE.......................................................
-
-
-				    
+ 00000129  EB 05		      jmp QuitNow
+				    ;...WRITE FILE CODE ENDS HERE.......................................................
 
  0000012B			    read_from_file:       
-				    ;READ FILE CODE STARTS HERE...............................................
-				    INVOKE CreateFile,
-					  ADDR filename, GENERIC_READ, DO_NOT_SHARE, NULL,
-					  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
-
- 00000147  A3 0000143E R	    mov fileHandle,eax		; save file handle
-				    .IF eax == INVALID_HANDLE_VALUE
- 00000151  BA 00001421 R	      mov  edx,OFFSET errMsg		; Display error message
- 00000156  E8 00000000 E	      call WriteString
- 0000015B  EB 3E		      jmp  QuitNow
-				    .ENDIF
-
-				    INVOKE ReadFile,		; write text to file
-					    fileHandle,		; file handle
-					    ADDR buffer,		; buffer pointer
-					    bufSize,		; number of bytes to write
-					    ADDR byteCount,		; number of bytes written
-					    0		; overlapped execution flag
-
-				    INVOKE CloseHandle, fileHandle
-
- 00000184  8B 35 00001442 R	    mov esi,byteCount		; insert null terminator
- 0000018A  C6 86 00000091 R	    mov buffer[esi],0		; into buffer
-	   00
- 00000191  BA 00000091 R	    mov edx,OFFSET buffer		; display the buffer
- 00000196  E8 00000000 E	    call WriteString
+				    ;READ FILE CODE STARTS HERE.......................................................
+ 0000012B  E8 000000B7		      call GetOutput
+				    
 				    ;............READ FILE CODE ENDS HERE........................................................
 
- 0000019B			    QuitNow:
+ 00000130			    QuitNow:
 				    mGotoxy 0, 18
- 0000019B  52		     1		push edx
- 0000019C  B6 12	     1	    mov  dh,18
- 0000019E  B2 00	     1	    mov  dl,0
- 000001A0  E8 00000000 E     1		call Gotoxy
- 000001A5  5A		     1		pop  edx
+ 00000130  52		     1		push edx
+ 00000131  B6 12	     1	    mov  dh,18
+ 00000133  B2 00	     1	    mov  dl,0
+ 00000135  E8 00000000 E     1		call Gotoxy
+ 0000013A  5A		     1		pop  edx
 				    mWriteLn "Press Enter to exit the Program "
  00001562		     2		.data				
  00001562 50 72 65 73 73     2		??000A BYTE "Press Enter to exit the Program ",0		
@@ -329,36 +303,36 @@ hm.asm							     Page 1 - 1
 	   74 68 65 20 50
 	   72 6F 67 72 61
 	   6D 20 00
- 000001A6		     2		.code
- 000001A6  52		     2		push edx
- 000001A7  BA 00001562 R     2		mov  edx,OFFSET ??000A
- 000001AC  E8 00000000 E     2		call Writestring
- 000001B1  5A		     2		pop  edx
- 000001B2  E8 00000000 E     1		call Crlf
- 000001B7  E8 00000000 E	    call WaitMsg
- 000001BC  E8 00000000 E	    call ClrScr
+ 0000013B		     2		.code
+ 0000013B  52		     2		push edx
+ 0000013C  BA 00001562 R     2		mov  edx,OFFSET ??000A
+ 00000141  E8 00000000 E     2		call Writestring
+ 00000146  5A		     2		pop  edx
+ 00000147  E8 00000000 E     1		call Crlf
+ 0000014C  E8 00000000 E	    call WaitMsg
+ 00000151  E8 00000000 E	    call ClrScr
 
 				    
- 000001C1  E8 00000000 E	    call crlf
- 000001C6  BA 00000081 R	    mov edx, OFFSET msg
- 000001CB  E8 00000000 E	    call WriteString
+ 00000156  E8 00000000 E	    call crlf
+ 0000015B  BA 00000081 R	    mov edx, OFFSET msg
+ 00000160  E8 00000000 E	    call WriteString
 
- 000001D0  E8 00000000 E	    call GetMseconds
- 000001D5  2B C3		    sub eax, ebx
- 000001D7  E8 00000000 E	    call WriteInt
+ 00000165  E8 00000000 E	    call GetMseconds
+ 0000016A  2B C3		    sub eax, ebx
+ 0000016C  E8 00000000 E	    call WriteInt
 
 
 				exit
- 000001E3			main endp
+ 00000178			main ENDP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
- 000001E3			initTextArea PROC;.......................
+ 00000178			initTextArea PROC;..................................
 
 					mGotoxy 30, 2
- 000001E3  52		     1		push edx
- 000001E4  B6 02	     1	    mov  dh,2
- 000001E6  B2 1E	     1	    mov  dl,30
- 000001E8  E8 00000000 E     1		call Gotoxy
- 000001ED  5A		     1		pop  edx
+ 00000178  52		     1		push edx
+ 00000179  B6 02	     1	    mov  dh,2
+ 0000017B  B2 1E	     1	    mov  dl,30
+ 0000017D  E8 00000000 E     1		call Gotoxy
+ 00000182  5A		     1		pop  edx
 					mWrite "Start Entering Text !!!"
  00001583		     1		.data				
  00001583 53 74 61 72 74     1		??000B BYTE "Start Entering Text !!!",0		
@@ -366,29 +340,27 @@ hm.asm							     Page 1 - 1
 	   72 69 6E 67 20
 	   54 65 78 74 20
 	   21 21 21 00
- 000001EE		     1		.code
- 000001EE  52		     1		push edx
- 000001EF  BA 00001583 R     1		mov  edx,OFFSET ??000B
- 000001F4  E8 00000000 E     1		call Writestring
- 000001F9  5A		     1		pop  edx
+ 00000183		     1		.code
+ 00000183  52		     1		push edx
+ 00000184  BA 00001583 R     1		mov  edx,OFFSET ??000B
+ 00000189  E8 00000000 E     1		call Writestring
+ 0000018E  5A		     1		pop  edx
 					mGotoxy 0, 5
- 000001FA  52		     1		push edx
- 000001FB  B6 05	     1	    mov  dh,5
- 000001FD  B2 00	     1	    mov  dl,0
- 000001FF  E8 00000000 E     1		call Gotoxy
- 00000204  5A		     1		pop  edx
+ 0000018F  52		     1		push edx
+ 00000190  B6 05	     1	    mov  dh,5
+ 00000192  B2 00	     1	    mov  dl,0
+ 00000194  E8 00000000 E     1		call Gotoxy
+ 00000199  5A		     1		pop  edx
 
- 00000205  C3				ret
+ 0000019A  C3				ret
 
- 00000206			initTextArea ENDP;..........................
+ 0000019B			initTextArea ENDP;.......................................
 
-
-
- 00000206			GetInput PROC
+ 0000019B			GetInput PROC;.....................................................
 
 					; Get handle to standard input
 					INVOKE GetStdHandle, STD_INPUT_HANDLE
- 0000020D  A3 00001419 R		mov stdInHandle,eax
+ 000001A2  A3 00001419 R		mov stdInHandle,eax
 
 					; Wait for user input
 					INVOKE ReadConsole, stdInHandle, ADDR buffer,
@@ -403,20 +375,52 @@ hm.asm							     Page 1 - 1
 
 					;printing buffer
 
- 0000022E  E8 00000000 E		call crlf 
- 00000233  E8 00000000 E		call crlf
+ 000001C3  E8 00000000 E		call crlf 
+ 000001C8  E8 00000000 E		call crlf
 
- 00000238  BA 00000091 R		mov edx, offset buffer
- 0000023D  E8 00000000 E		call writestring
- 00000242  E8 00000000 E		call crlf
- 00000247  A1 0000141D R		mov eax, bytesRead
- 0000024C  E8 00000000 E		call writedec
+ 000001CD  BA 00000091 R		mov edx, offset buffer
+ 000001D2  E8 00000000 E		call writestring
+ 000001D7  E8 00000000 E		call crlf
+ 000001DC  A1 0000141D R		mov eax, bytesRead
+ 000001E1  E8 00000000 E		call writedec
 
- 00000251  C3				ret
- 00000252			GetInput ENDP
+ 000001E6  C3				ret
+ 000001E7			GetInput ENDP;....................................................
+
+ 000001E7			GetOutput PROC;..................................................................
+
+				  INVOKE CreateFile,
+					  ADDR filename, GENERIC_READ, DO_NOT_SHARE, NULL,
+					  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
+
+ 00000203  A3 0000143E R	    mov fileHandle,eax		; save file handle
+				    .IF eax == INVALID_HANDLE_VALUE
+ 0000020D  BA 00001421 R	      mov  edx,OFFSET errMsg		; Display error message
+ 00000212  E8 00000000 E	      call WriteString
+ 00000217  C3			      ret
+				      ;jmp  QuitNow
+				    .ENDIF
+
+				    INVOKE ReadFile,		; write text to file
+					    fileHandle,		; file handle
+					    ADDR buffer,		; buffer pointer
+					    bufSize,		; number of bytes to write
+					    ADDR byteCount,		; number of bytes written
+					    0		; overlapped execution flag
+
+				    INVOKE CloseHandle, fileHandle
+
+ 0000023F  8B 35 00001442 R	    mov esi,byteCount		; insert null terminator
+ 00000245  C6 86 00000091 R	    mov buffer[esi],0		; into buffer
+	   00
+ 0000024C  BA 00000091 R	    mov edx,OFFSET buffer		; display the buffer
+ 00000251  E8 00000000 E	    call WriteString
+
+ 00000256  C3			    ret
+ 00000257			GetOutput ENDP;.......................................................................
 
 				end main
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 17:52:40
+Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 18:26:56
 hm.asm							     Symbols 2 - 1
 
 
@@ -484,7 +488,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 0000159B DWord	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000252 DWord	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000257 DWord	  Public  'CODE'	
 
 
 Procedures,  parameters and locals:
@@ -506,10 +510,11 @@ GetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 GetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetConsoleScreenBufferInfo . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetDateTime  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-GetInput . . . . . . . . . . . .	P Near	 00000206 _TEXT	Length= 0000004C Public STDCALL
+GetInput . . . . . . . . . . . .	P Near	 0000019B _TEXT	Length= 0000004C Public STDCALL
 GetLocalTime . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetMseconds  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetNumberOfConsoleInputEvents  .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+GetOutput  . . . . . . . . . . .	P Near	 000001E7 _TEXT	Length= 00000070 Public STDCALL
 GetStdHandle . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetSystemTime  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetTickCount . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -553,11 +558,11 @@ WriteFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteHex . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteInt . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-initTextArea . . . . . . . . . .	P Near	 000001E3 _TEXT	Length= 00000023 Public STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001E3 Public STDCALL
+initTextArea . . . . . . . . . .	P Near	 00000178 _TEXT	Length= 00000023 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000178 Public STDCALL
   write_in_file  . . . . . . . .	L Near	 0000011F _TEXT	
   read_from_file . . . . . . . .	L Near	 0000012B _TEXT	
-  QuitNow  . . . . . . . . . . .	L Near	 0000019B _TEXT	
+  QuitNow  . . . . . . . . . . .	L Near	 00000130 _TEXT	
 
 
 Symbols:
