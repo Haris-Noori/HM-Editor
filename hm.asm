@@ -10,14 +10,6 @@ include macros.inc
 INCLUDELIB user32.lib
 ;includelib irvine32.lib
 
-BufSize = 80		; defining buffer size
-
-.data
-	buffer BYTE BufSize DUP(?),0,0
-	stdInHandle DWORD ?
-	bytesRead   DWORD ?
-
-;BufSize = 80		; defining buffer size
 
 .data
 
@@ -29,6 +21,7 @@ BufSize = 80		; defining buffer size
     ;DATA for output file..................................
     BUFSIZE = 5000
     buffer BYTE BUFSIZE DUP(?)
+    stdInHandle DWORD ?
     bytesRead DWORD ?
 
     errMsg BYTE "Cannot open file",0dh,0ah,0
@@ -49,7 +42,6 @@ main PROC
     mWrite "|------------------------------|"
     mGotoxy 30, 9
     mWrite "| HM Editor                    |"
-    mWrite "| HM Text Editor               |"
     mGotoxy 30, 10
     mWrite "| Developed by:                |"
     mGotoxy 30, 11
@@ -87,7 +79,8 @@ main PROC
 
     write_in_file:
     ;...WRITE FILE CODE STARTS HERE.......................................................
-    mWriteLn " -- Write your text -- "
+    call initTextArea
+    call GetInput
 
 
     jmp QuitNow
@@ -96,11 +89,6 @@ main PROC
 
     
 
-    ; mGotoxy 10, 2
-    ; mov  edx,OFFSET stringIn
-    ; mov  ecx,MAX            ;buffer size - 1
-    ; call ReadString
-
     read_from_file:       
     ;READ FILE CODE STARTS HERE...............................................
     INVOKE CreateFile,
@@ -108,11 +96,11 @@ main PROC
 	  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
 
     mov fileHandle,eax		; save file handle
-	.IF eax == INVALID_HANDLE_VALUE
-	  mov  edx,OFFSET errMsg		; Display error message
-	  call WriteString
-	  jmp  QuitNow
-	.ENDIF
+    .IF eax == INVALID_HANDLE_VALUE
+      mov  edx,OFFSET errMsg		; Display error message
+      call WriteString
+      jmp  QuitNow
+    .ENDIF
 
     INVOKE ReadFile,		; write text to file
 	    fileHandle,		; file handle
@@ -124,9 +112,9 @@ main PROC
     INVOKE CloseHandle, fileHandle
 
     mov esi,byteCount		; insert null terminator
-	mov buffer[esi],0		; into buffer
-	mov edx,OFFSET buffer		; display the buffer
-	call WriteString
+    mov buffer[esi],0		; into buffer
+    mov edx,OFFSET buffer		; display the buffer
+    call WriteString
     ;............READ FILE CODE ENDS HERE........................................................
 
     QuitNow:
@@ -135,7 +123,6 @@ main PROC
     call WaitMsg
     call ClrScr
 
-<<<<<<< HEAD
     
     call crlf
     mov edx, OFFSET msg
@@ -145,16 +132,11 @@ main PROC
     sub eax, ebx
     call WriteInt
 
-=======
-    call initTextArea
-    call GetInput
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
 
 exit
-
 main endp
 
-initTextArea PROC 
+initTextArea PROC;.......................
 
 	mGotoxy 30, 2
 	mWrite "Start Entering Text !!!"
@@ -162,31 +144,9 @@ initTextArea PROC
 
 	ret
 
-initTextArea ENDP
-
-; GetKeyInput PROC 
-
-; 	; Taking input using readkey
-
-; 	mov ecx, BufSize
-; 	mov ebx, 0
-
-; 	getInput:
-
-; 		;call readkey
-; 		jz nextKey
-
-; 		mov buffer[ebx], al
-; 		call writechar
-; 		call crlf
+initTextArea ENDP;..........................
 
 
-; 		nextKey:
-
-
-; 	loop getInput
-
-; GetKeyInput ENDP
 
 GetInput PROC
 
@@ -196,7 +156,7 @@ GetInput PROC
 
 	; Wait for user input
 	INVOKE ReadConsole, stdInHandle, ADDR buffer,
-	  BufSize, ADDR bytesRead, 0
+	  BUFSIZE, ADDR bytesRead, 0
 
 	; Display the buffer
 	;mov  esi,OFFSET buffer

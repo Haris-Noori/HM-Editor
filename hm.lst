@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 02:41:15
+Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 17:52:40
 hm.asm							     Page 1 - 1
 
 
@@ -8,12 +7,6 @@ hm.asm							     Page 1 - 1
 				;buffer        buffer
 				;stdInHandle   fileHnadle
 				;bytesRead     bytesRead 
-=======
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/07/19 21:03:22
-hm.asm							     Page 1 - 1
-
-
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
 
 
 				include irvine32.inc
@@ -31,9 +24,8 @@ hm.asm							     Page 1 - 1
 			      C .LIST
 			      C 
 				INCLUDELIB user32.lib
-<<<<<<< HEAD
+				;includelib irvine32.lib
 
-				;BufSize = 80		; defining buffer size
 
  00000000			.data
 
@@ -52,19 +44,20 @@ hm.asm							     Page 1 - 1
  00000091  00001388 [		    buffer BYTE BUFSIZE DUP(?)
 	    00
 	   ]
- 00001419 00000000		    bytesRead DWORD ?
+ 00001419 00000000		    stdInHandle DWORD ?
+ 0000141D 00000000		    bytesRead DWORD ?
 
- 0000141D 43 61 6E 6E 6F	    errMsg BYTE "Cannot open file",0dh,0ah,0
+ 00001421 43 61 6E 6E 6F	    errMsg BYTE "Cannot open file",0dh,0ah,0
 	   74 20 6F 70 65
 	   6E 20 66 69 6C
 	   65 0D 0A 00
- 00001430 68 61 72 69 73	    filename     BYTE "haris.txt",0
+ 00001434 68 61 72 69 73	    filename     BYTE "haris.txt",0
 	   2E 74 78 74 00
- 0000143A 00000000		    fileHandle   DWORD ?	; handle to output file
- 0000143E 00000000		    byteCount    DWORD ?    	; number of bytes written
+ 0000143E 00000000		    fileHandle   DWORD ?	; handle to output file
+ 00001442 00000000		    byteCount    DWORD ?    	; number of bytes written
 				    ;.....................................................
 
- 00001442 00			    key BYTE ?
+ 00001446 00			    key BYTE ?
 				    
  00000000			.code 
  00000000			main PROC
@@ -79,45 +72,17 @@ hm.asm							     Page 1 - 1
  00000011  E8 00000000 E     1		call Gotoxy
  00000016  5A		     1		pop  edx
 				    mWrite "|------------------------------|"
- 00001443		     1		.data				
- 00001443 7C 2D 2D 2D 2D     1		??0000 BYTE "|------------------------------|",0		
-=======
-				;includelib irvine32.lib
-
- = 00000050			BufSize = 80		; defining buffer size
-
- 00000000			.data
- 00000000  00000050 [			buffer BYTE BufSize DUP(?),0,0
-	    00
-	   ] 00 00
- 00000052 00000000			stdInHandle DWORD ?
- 00000056 00000000			bytesRead   DWORD ?
-
- 00000000			.code 
-
- 00000000			main PROC
-
- 00000000  E8 00000000 E	    call ClrScr
-				    mGotoxy 30, 8
- 00000005  52		     1		push edx
- 00000006  B6 08	     1	    mov  dh,8
- 00000008  B2 1E	     1	    mov  dl,30
- 0000000A  E8 00000000 E     1		call Gotoxy
- 0000000F  5A		     1		pop  edx
-				    mWrite "|------------------------------|"
- 0000005A		     1		.data				
- 0000005A 7C 2D 2D 2D 2D     1		??0000 BYTE "|------------------------------|",0		
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 00001447		     1		.data				
+ 00001447 7C 2D 2D 2D 2D     1		??0000 BYTE "|------------------------------|",0		
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 7C 00
-<<<<<<< HEAD
  00000017		     1		.code
  00000017  52		     1		push edx
- 00000018  BA 00001443 R     1		mov  edx,OFFSET ??0000
+ 00000018  BA 00001447 R     1		mov  edx,OFFSET ??0000
  0000001D  E8 00000000 E     1		call Writestring
  00000022  5A		     1		pop  edx
 				    mGotoxy 30, 9
@@ -127,35 +92,17 @@ hm.asm							     Page 1 - 1
  00000028  E8 00000000 E     1		call Gotoxy
  0000002D  5A		     1		pop  edx
 				    mWrite "| HM Editor                    |"
- 00001464		     1		.data				
- 00001464 7C 20 48 4D 20     1		??0001 BYTE "| HM Editor                    |",0		
-=======
- 00000010		     1		.code
- 00000010  52		     1		push edx
- 00000011  BA 0000005A R     1		mov  edx,OFFSET ??0000
- 00000016  E8 00000000 E     1		call Writestring
- 0000001B  5A		     1		pop  edx
-				    mGotoxy 30, 9
- 0000001C  52		     1		push edx
- 0000001D  B6 09	     1	    mov  dh,9
- 0000001F  B2 1E	     1	    mov  dl,30
- 00000021  E8 00000000 E     1		call Gotoxy
- 00000026  5A		     1		pop  edx
-				    mWrite "| HM Text Editor                    |"
- 0000007B		     1		.data				
- 0000007B 7C 20 48 4D 20     1		??0001 BYTE "| HM Text Editor                    |",0		
-	   54 65 78 74 20
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 00001468		     1		.data				
+ 00001468 7C 20 48 4D 20     1		??0001 BYTE "| HM Editor                    |",0		
 	   45 64 69 74 6F
 	   72 20 20 20 20
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 7C 00
-<<<<<<< HEAD
  0000002E		     1		.code
  0000002E  52		     1		push edx
- 0000002F  BA 00001464 R     1		mov  edx,OFFSET ??0001
+ 0000002F  BA 00001468 R     1		mov  edx,OFFSET ??0001
  00000034  E8 00000000 E     1		call Writestring
  00000039  5A		     1		pop  edx
 				    mGotoxy 30, 10
@@ -165,34 +112,17 @@ hm.asm							     Page 1 - 1
  0000003F  E8 00000000 E     1		call Gotoxy
  00000044  5A		     1		pop  edx
 				    mWrite "| Developed by:                |"
- 00001485		     1		.data				
- 00001485 7C 20 44 65 76     1		??0002 BYTE "| Developed by:                |",0		
-=======
- 00000027		     1		.code
- 00000027  52		     1		push edx
- 00000028  BA 0000007B R     1		mov  edx,OFFSET ??0001
- 0000002D  E8 00000000 E     1		call Writestring
- 00000032  5A		     1		pop  edx
-				    mGotoxy 30, 10
- 00000033  52		     1		push edx
- 00000034  B6 0A	     1	    mov  dh,10
- 00000036  B2 1E	     1	    mov  dl,30
- 00000038  E8 00000000 E     1		call Gotoxy
- 0000003D  5A		     1		pop  edx
-				    mWrite "| Developed by:                |"
- 000000A1		     1		.data				
- 000000A1 7C 20 44 65 76     1		??0002 BYTE "| Developed by:                |",0		
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 00001489		     1		.data				
+ 00001489 7C 20 44 65 76     1		??0002 BYTE "| Developed by:                |",0		
 	   65 6C 6F 70 65
 	   64 20 62 79 3A
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 7C 00
-<<<<<<< HEAD
  00000045		     1		.code
  00000045  52		     1		push edx
- 00000046  BA 00001485 R     1		mov  edx,OFFSET ??0002
+ 00000046  BA 00001489 R     1		mov  edx,OFFSET ??0002
  0000004B  E8 00000000 E     1		call Writestring
  00000050  5A		     1		pop  edx
 				    mGotoxy 30, 11
@@ -202,34 +132,17 @@ hm.asm							     Page 1 - 1
  00000056  E8 00000000 E     1		call Gotoxy
  0000005B  5A		     1		pop  edx
 				    mWrite "|                              |" 
- 000014A6		     1		.data				
- 000014A6 7C 20 20 20 20     1		??0003 BYTE "|                              |",0		
-=======
- 0000003E		     1		.code
- 0000003E  52		     1		push edx
- 0000003F  BA 000000A1 R     1		mov  edx,OFFSET ??0002
- 00000044  E8 00000000 E     1		call Writestring
- 00000049  5A		     1		pop  edx
-				    mGotoxy 30, 11
- 0000004A  52		     1		push edx
- 0000004B  B6 0B	     1	    mov  dh,11
- 0000004D  B2 1E	     1	    mov  dl,30
- 0000004F  E8 00000000 E     1		call Gotoxy
- 00000054  5A		     1		pop  edx
-				    mWrite "|                              |" 
- 000000C2		     1		.data				
- 000000C2 7C 20 20 20 20     1		??0003 BYTE "|                              |",0		
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 000014AA		     1		.data				
+ 000014AA 7C 20 20 20 20     1		??0003 BYTE "|                              |",0		
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 20 20 20 20
 	   20 7C 00
-<<<<<<< HEAD
  0000005C		     1		.code
  0000005C  52		     1		push edx
- 0000005D  BA 000014A6 R     1		mov  edx,OFFSET ??0003
+ 0000005D  BA 000014AA R     1		mov  edx,OFFSET ??0003
  00000062  E8 00000000 E     1		call Writestring
  00000067  5A		     1		pop  edx
 				    mGotoxy 30, 12
@@ -239,34 +152,17 @@ hm.asm							     Page 1 - 1
  0000006D  E8 00000000 E     1		call Gotoxy
  00000072  5A		     1		pop  edx
 				    mWrite "| M.Haris Noori P17-6003       |"
- 000014C7		     1		.data				
- 000014C7 7C 20 4D 2E 48     1		??0004 BYTE "| M.Haris Noori P17-6003       |",0		
-=======
- 00000055		     1		.code
- 00000055  52		     1		push edx
- 00000056  BA 000000C2 R     1		mov  edx,OFFSET ??0003
- 0000005B  E8 00000000 E     1		call Writestring
- 00000060  5A		     1		pop  edx
-				    mGotoxy 30, 12
- 00000061  52		     1		push edx
- 00000062  B6 0C	     1	    mov  dh,12
- 00000064  B2 1E	     1	    mov  dl,30
- 00000066  E8 00000000 E     1		call Gotoxy
- 0000006B  5A		     1		pop  edx
-				    mWrite "| M.Haris Noori P17-6003       |"
- 000000E3		     1		.data				
- 000000E3 7C 20 4D 2E 48     1		??0004 BYTE "| M.Haris Noori P17-6003       |",0		
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 000014CB		     1		.data				
+ 000014CB 7C 20 4D 2E 48     1		??0004 BYTE "| M.Haris Noori P17-6003       |",0		
 	   61 72 69 73 20
 	   4E 6F 6F 72 69
 	   20 50 31 37 2D
 	   36 30 30 33 20
 	   20 20 20 20 20
 	   20 7C 00
-<<<<<<< HEAD
  00000073		     1		.code
  00000073  52		     1		push edx
- 00000074  BA 000014C7 R     1		mov  edx,OFFSET ??0004
+ 00000074  BA 000014CB R     1		mov  edx,OFFSET ??0004
  00000079  E8 00000000 E     1		call Writestring
  0000007E  5A		     1		pop  edx
 				    mGotoxy 30, 13
@@ -276,34 +172,17 @@ hm.asm							     Page 1 - 1
  00000084  E8 00000000 E     1		call Gotoxy
  00000089  5A		     1		pop  edx
 				    mWrite "| Mubeen Ghauri P17-6107       |"
- 000014E8		     1		.data				
- 000014E8 7C 20 4D 75 62     1		??0005 BYTE "| Mubeen Ghauri P17-6107       |",0		
-=======
- 0000006C		     1		.code
- 0000006C  52		     1		push edx
- 0000006D  BA 000000E3 R     1		mov  edx,OFFSET ??0004
- 00000072  E8 00000000 E     1		call Writestring
- 00000077  5A		     1		pop  edx
-				    mGotoxy 30, 13
- 00000078  52		     1		push edx
- 00000079  B6 0D	     1	    mov  dh,13
- 0000007B  B2 1E	     1	    mov  dl,30
- 0000007D  E8 00000000 E     1		call Gotoxy
- 00000082  5A		     1		pop  edx
-				    mWrite "| Mubeen Ghauri P17-6107       |"
- 00000104		     1		.data				
- 00000104 7C 20 4D 75 62     1		??0005 BYTE "| Mubeen Ghauri P17-6107       |",0		
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 000014EC		     1		.data				
+ 000014EC 7C 20 4D 75 62     1		??0005 BYTE "| Mubeen Ghauri P17-6107       |",0		
 	   65 65 6E 20 47
 	   68 61 75 72 69
 	   20 50 31 37 2D
 	   36 31 30 37 20
 	   20 20 20 20 20
 	   20 7C 00
-<<<<<<< HEAD
  0000008A		     1		.code
  0000008A  52		     1		push edx
- 0000008B  BA 000014E8 R     1		mov  edx,OFFSET ??0005
+ 0000008B  BA 000014EC R     1		mov  edx,OFFSET ??0005
  00000090  E8 00000000 E     1		call Writestring
  00000095  5A		     1		pop  edx
 				    mGotoxy 30, 14
@@ -313,34 +192,17 @@ hm.asm							     Page 1 - 1
  0000009B  E8 00000000 E     1		call Gotoxy
  000000A0  5A		     1		pop  edx
 				    mWrite "|------------------------------|"
- 00001509		     1		.data				
- 00001509 7C 2D 2D 2D 2D     1		??0006 BYTE "|------------------------------|",0		
-=======
- 00000083		     1		.code
- 00000083  52		     1		push edx
- 00000084  BA 00000104 R     1		mov  edx,OFFSET ??0005
- 00000089  E8 00000000 E     1		call Writestring
- 0000008E  5A		     1		pop  edx
-				    mGotoxy 30, 14
- 0000008F  52		     1		push edx
- 00000090  B6 0E	     1	    mov  dh,14
- 00000092  B2 1E	     1	    mov  dl,30
- 00000094  E8 00000000 E     1		call Gotoxy
- 00000099  5A		     1		pop  edx
-				    mWrite "|------------------------------|"
- 00000125		     1		.data				
- 00000125 7C 2D 2D 2D 2D     1		??0006 BYTE "|------------------------------|",0		
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+ 0000150D		     1		.data				
+ 0000150D 7C 2D 2D 2D 2D     1		??0006 BYTE "|------------------------------|",0		
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 2D 2D 2D 2D
 	   2D 7C 00
-<<<<<<< HEAD
  000000A1		     1		.code
  000000A1  52		     1		push edx
- 000000A2  BA 00001509 R     1		mov  edx,OFFSET ??0006
+ 000000A2  BA 0000150D R     1		mov  edx,OFFSET ??0006
  000000A7  E8 00000000 E     1		call Writestring
  000000AC  5A		     1		pop  edx
 				    ;mGotoxy 50, 20
@@ -355,22 +217,23 @@ hm.asm							     Page 1 - 1
  000000B8  B8 000003E8		    mov  eax,1000 
  000000BD  E8 00000000 E	    call Delay
 				    mWrite "Loading ."
- 0000152A		     1		.data				
- 0000152A 4C 6F 61 64 69     1		??0007 BYTE "Loading .",0		
+
+ 0000152E		     1		.data				
+ 0000152E 4C 6F 61 64 69     1		??0007 BYTE "Loading .",0		
 	   6E 67 20 2E 00
  000000C2		     1		.code
  000000C2  52		     1		push edx
- 000000C3  BA 0000152A R     1		mov  edx,OFFSET ??0007
+ 000000C3  BA 0000152E R     1		mov  edx,OFFSET ??0007
  000000C8  E8 00000000 E     1		call Writestring
  000000CD  5A		     1		pop  edx
  000000CE  B8 000003E8		    mov  eax,1000 
  000000D3  E8 00000000 E	    call Delay
 				    mWrite " ."
- 00001534		     1		.data				
- 00001534 20 2E 00	     1		??0008 BYTE " .",0		
+ 00001538		     1		.data				
+ 00001538 20 2E 00	     1		??0008 BYTE " .",0		
  000000D8		     1		.code
  000000D8  52		     1		push edx
- 000000D9  BA 00001534 R     1		mov  edx,OFFSET ??0008
+ 000000D9  BA 00001538 R     1		mov  edx,OFFSET ??0008
  000000DE  E8 00000000 E     1		call Writestring
  000000E3  5A		     1		pop  edx
  000000E4  E8 00000000 E	    call Delay
@@ -383,8 +246,8 @@ hm.asm							     Page 1 - 1
  000000F3  E8 00000000 E     1		call Gotoxy
  000000F8  5A		     1		pop  edx
 				    mWriteLn "Do you want to read from file- (Y/N) ?"
- 00001537		     2		.data				
- 00001537 44 6F 20 79 6F     2		??0009 BYTE "Do you want to read from file- (Y/N) ?",0		
+ 0000153B		     2		.data				
+ 0000153B 44 6F 20 79 6F     2		??0009 BYTE "Do you want to read from file- (Y/N) ?",0		
 	   75 20 77 61 6E
 	   74 20 74 6F 20
 	   72 65 61 64 20
@@ -394,16 +257,16 @@ hm.asm							     Page 1 - 1
 	   29 20 3F 00
  000000F9		     2		.code
  000000F9  52		     2		push edx
- 000000FA  BA 00001537 R     2		mov  edx,OFFSET ??0009
+ 000000FA  BA 0000153B R     2		mov  edx,OFFSET ??0009
  000000FF  E8 00000000 E     2		call Writestring
  00000104  5A		     2		pop  edx
  00000105  E8 00000000 E     1		call Crlf
  0000010A  E8 00000000 E	    call ReadChar
- 0000010F  A2 00001442 R	    mov key, al
+ 0000010F  A2 00001446 R	    mov key, al
 
- 00000114  80 3D 00001442 R	    cmp key, "Y"            ;READ OR WRITE
+ 00000114  80 3D 00001446 R	    cmp key, "Y"            ;READ OR WRITE
 	   59
- 0000011B  74 15		    je read_from_file
+ 0000011B  74 0E		    je read_from_file
  0000011D  EB 00		    jmp write_in_file
 
 
@@ -411,44 +274,28 @@ hm.asm							     Page 1 - 1
 
  0000011F			    write_in_file:
 				    ;...WRITE FILE CODE STARTS HERE.......................................................
-				    mWriteLn " -- Write your text -- "
- 0000155E		     2		.data				
- 0000155E 20 2D 2D 20 57     2		??000A BYTE " -- Write your text -- ",0		
-	   72 69 74 65 20
-	   79 6F 75 72 20
-	   74 65 78 74 20
-	   2D 2D 20 00
- 0000011F		     2		.code
- 0000011F  52		     2		push edx
- 00000120  BA 0000155E R     2		mov  edx,OFFSET ??000A
- 00000125  E8 00000000 E     2		call Writestring
- 0000012A  5A		     2		pop  edx
- 0000012B  E8 00000000 E     1		call Crlf
+ 0000011F  E8 000000BF		    call initTextArea
+ 00000124  E8 000000DD		    call GetInput
 
 
- 00000130  EB 70		    jmp QuitNow
+ 00000129  EB 70		    jmp QuitNow
 				    ;...WRITE FILE CODE STARTS HERE.......................................................
 
 
 				    
 
-				    ; mGotoxy 10, 2
-				    ; mov  edx,OFFSET stringIn
-				    ; mov  ecx,MAX            ;buffer size - 1
-				    ; call ReadString
-
- 00000132			    read_from_file:       
+ 0000012B			    read_from_file:       
 				    ;READ FILE CODE STARTS HERE...............................................
 				    INVOKE CreateFile,
 					  ADDR filename, GENERIC_READ, DO_NOT_SHARE, NULL,
 					  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
 
- 0000014E  A3 0000143A R	    mov fileHandle,eax		; save file handle
-					.IF eax == INVALID_HANDLE_VALUE
- 00000158  BA 0000141D R		  mov  edx,OFFSET errMsg		; Display error message
- 0000015D  E8 00000000 E		  call WriteString
- 00000162  EB 3E			  jmp  QuitNow
-					.ENDIF
+ 00000147  A3 0000143E R	    mov fileHandle,eax		; save file handle
+				    .IF eax == INVALID_HANDLE_VALUE
+ 00000151  BA 00001421 R	      mov  edx,OFFSET errMsg		; Display error message
+ 00000156  E8 00000000 E	      call WriteString
+ 0000015B  EB 3E		      jmp  QuitNow
+				    .ENDIF
 
 				    INVOKE ReadFile,		; write text to file
 					    fileHandle,		; file handle
@@ -459,140 +306,93 @@ hm.asm							     Page 1 - 1
 
 				    INVOKE CloseHandle, fileHandle
 
- 0000018B  8B 35 0000143E R	    mov esi,byteCount		; insert null terminator
- 00000191  C6 86 00000091 R		mov buffer[esi],0		; into buffer
+ 00000184  8B 35 00001442 R	    mov esi,byteCount		; insert null terminator
+ 0000018A  C6 86 00000091 R	    mov buffer[esi],0		; into buffer
 	   00
- 00000198  BA 00000091 R		mov edx,OFFSET buffer		; display the buffer
- 0000019D  E8 00000000 E		call WriteString
+ 00000191  BA 00000091 R	    mov edx,OFFSET buffer		; display the buffer
+ 00000196  E8 00000000 E	    call WriteString
 				    ;............READ FILE CODE ENDS HERE........................................................
 
- 000001A2			    QuitNow:
+ 0000019B			    QuitNow:
 				    mGotoxy 0, 18
- 000001A2  52		     1		push edx
- 000001A3  B6 12	     1	    mov  dh,18
- 000001A5  B2 00	     1	    mov  dl,0
- 000001A7  E8 00000000 E     1		call Gotoxy
- 000001AC  5A		     1		pop  edx
+ 0000019B  52		     1		push edx
+ 0000019C  B6 12	     1	    mov  dh,18
+ 0000019E  B2 00	     1	    mov  dl,0
+ 000001A0  E8 00000000 E     1		call Gotoxy
+ 000001A5  5A		     1		pop  edx
 				    mWriteLn "Press Enter to exit the Program "
- 00001576		     2		.data				
- 00001576 50 72 65 73 73     2		??000B BYTE "Press Enter to exit the Program ",0		
+ 00001562		     2		.data				
+ 00001562 50 72 65 73 73     2		??000A BYTE "Press Enter to exit the Program ",0		
 	   20 45 6E 74 65
 	   72 20 74 6F 20
 	   65 78 69 74 20
 	   74 68 65 20 50
 	   72 6F 67 72 61
 	   6D 20 00
- 000001AD		     2		.code
- 000001AD  52		     2		push edx
- 000001AE  BA 00001576 R     2		mov  edx,OFFSET ??000B
- 000001B3  E8 00000000 E     2		call Writestring
- 000001B8  5A		     2		pop  edx
- 000001B9  E8 00000000 E     1		call Crlf
- 000001BE  E8 00000000 E	    call WaitMsg
- 000001C3  E8 00000000 E	    call ClrScr
+ 000001A6		     2		.code
+ 000001A6  52		     2		push edx
+ 000001A7  BA 00001562 R     2		mov  edx,OFFSET ??000A
+ 000001AC  E8 00000000 E     2		call Writestring
+ 000001B1  5A		     2		pop  edx
+ 000001B2  E8 00000000 E     1		call Crlf
+ 000001B7  E8 00000000 E	    call WaitMsg
+ 000001BC  E8 00000000 E	    call ClrScr
 
 				    
- 000001C8  E8 00000000 E	    call crlf
- 000001CD  BA 00000081 R	    mov edx, OFFSET msg
- 000001D2  E8 00000000 E	    call WriteString
+ 000001C1  E8 00000000 E	    call crlf
+ 000001C6  BA 00000081 R	    mov edx, OFFSET msg
+ 000001CB  E8 00000000 E	    call WriteString
 
- 000001D7  E8 00000000 E	    call GetMseconds
- 000001DC  2B C3		    sub eax, ebx
- 000001DE  E8 00000000 E	    call WriteInt
+ 000001D0  E8 00000000 E	    call GetMseconds
+ 000001D5  2B C3		    sub eax, ebx
+ 000001D7  E8 00000000 E	    call WriteInt
 
-
-				exit
-
- 000001EA			main endp
-				end main
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 02:41:15
-=======
- 0000009A		     1		.code
- 0000009A  52		     1		push edx
- 0000009B  BA 00000125 R     1		mov  edx,OFFSET ??0006
- 000000A0  E8 00000000 E     1		call Writestring
- 000000A5  5A		     1		pop  edx
-				    mGotoxy 50, 20
- 000000A6  52		     1		push edx
- 000000A7  B6 14	     1	    mov  dh,20
- 000000A9  B2 32	     1	    mov  dl,50
- 000000AB  E8 00000000 E     1		call Gotoxy
- 000000B0  5A		     1		pop  edx
-
- 000000B1  E8 00000000 E	    call WaitMsg
- 000000B6  E8 00000000 E	    call ClrScr
-
- 000000BB  E8 0000000C		    call initTextArea
- 000000C0  E8 0000002A		    call GetInput
 
 				exit
+ 000001E3			main endp
 
- 000000CC			main endp
-
- 000000CC			initTextArea PROC 
+ 000001E3			initTextArea PROC;.......................
 
 					mGotoxy 30, 2
- 000000CC  52		     1		push edx
- 000000CD  B6 02	     1	    mov  dh,2
- 000000CF  B2 1E	     1	    mov  dl,30
- 000000D1  E8 00000000 E     1		call Gotoxy
- 000000D6  5A		     1		pop  edx
+ 000001E3  52		     1		push edx
+ 000001E4  B6 02	     1	    mov  dh,2
+ 000001E6  B2 1E	     1	    mov  dl,30
+ 000001E8  E8 00000000 E     1		call Gotoxy
+ 000001ED  5A		     1		pop  edx
 					mWrite "Start Entering Text !!!"
- 00000146		     1		.data				
- 00000146 53 74 61 72 74     1		??0007 BYTE "Start Entering Text !!!",0		
+ 00001583		     1		.data				
+ 00001583 53 74 61 72 74     1		??000B BYTE "Start Entering Text !!!",0		
 	   20 45 6E 74 65
 	   72 69 6E 67 20
 	   54 65 78 74 20
 	   21 21 21 00
- 000000D7		     1		.code
- 000000D7  52		     1		push edx
- 000000D8  BA 00000146 R     1		mov  edx,OFFSET ??0007
- 000000DD  E8 00000000 E     1		call Writestring
- 000000E2  5A		     1		pop  edx
+ 000001EE		     1		.code
+ 000001EE  52		     1		push edx
+ 000001EF  BA 00001583 R     1		mov  edx,OFFSET ??000B
+ 000001F4  E8 00000000 E     1		call Writestring
+ 000001F9  5A		     1		pop  edx
 					mGotoxy 0, 5
- 000000E3  52		     1		push edx
- 000000E4  B6 05	     1	    mov  dh,5
- 000000E6  B2 00	     1	    mov  dl,0
- 000000E8  E8 00000000 E     1		call Gotoxy
- 000000ED  5A		     1		pop  edx
+ 000001FA  52		     1		push edx
+ 000001FB  B6 05	     1	    mov  dh,5
+ 000001FD  B2 00	     1	    mov  dl,0
+ 000001FF  E8 00000000 E     1		call Gotoxy
+ 00000204  5A		     1		pop  edx
 
- 000000EE  C3				ret
+ 00000205  C3				ret
 
- 000000EF			initTextArea ENDP
-
-				; GetKeyInput PROC 
-
-				; 	; Taking input using readkey
-
-				; 	mov ecx, BufSize
-				; 	mov ebx, 0
-
-				; 	getInput:
-
-				; 		;call readkey
-				; 		jz nextKey
-
-				; 		mov buffer[ebx], al
-				; 		call writechar
-				; 		call crlf
+ 00000206			initTextArea ENDP;..........................
 
 
-				; 		nextKey:
 
-
-				; 	loop getInput
-
-				; GetKeyInput ENDP
-
- 000000EF			GetInput PROC
+ 00000206			GetInput PROC
 
 					; Get handle to standard input
 					INVOKE GetStdHandle, STD_INPUT_HANDLE
- 000000F6  A3 00000052 R		mov stdInHandle,eax
+ 0000020D  A3 00001419 R		mov stdInHandle,eax
 
 					; Wait for user input
 					INVOKE ReadConsole, stdInHandle, ADDR buffer,
-					  BufSize, ADDR bytesRead, 0
+					  BUFSIZE, ADDR bytesRead, 0
 
 					; Display the buffer
 					;mov  esi,OFFSET buffer
@@ -603,21 +403,20 @@ hm.asm							     Page 1 - 1
 
 					;printing buffer
 
- 00000114  E8 00000000 E		call crlf 
- 00000119  E8 00000000 E		call crlf
+ 0000022E  E8 00000000 E		call crlf 
+ 00000233  E8 00000000 E		call crlf
 
- 0000011E  BA 00000000 R		mov edx, offset buffer
- 00000123  E8 00000000 E		call writestring
- 00000128  E8 00000000 E		call crlf
- 0000012D  A1 00000056 R		mov eax, bytesRead
- 00000132  E8 00000000 E		call writedec
+ 00000238  BA 00000091 R		mov edx, offset buffer
+ 0000023D  E8 00000000 E		call writestring
+ 00000242  E8 00000000 E		call crlf
+ 00000247  A1 0000141D R		mov eax, bytesRead
+ 0000024C  E8 00000000 E		call writedec
 
- 00000137  C3				ret
- 00000138			GetInput ENDP
+ 00000251  C3				ret
+ 00000252			GetInput ENDP
 
 				end main
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/07/19 21:03:22
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+Microsoft (R) Macro Assembler Version 6.15.8803		    05/09/19 17:52:40
 hm.asm							     Symbols 2 - 1
 
 
@@ -684,13 +483,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
-<<<<<<< HEAD
-_DATA  . . . . . . . . . . . . .	32 Bit	 00001597 DWord	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000001EA DWord	  Public  'CODE'	
-=======
-_DATA  . . . . . . . . . . . . .	32 Bit	 0000015E DWord	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000138 DWord	  Public  'CODE'	
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000159B DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000252 DWord	  Public  'CODE'	
 
 
 Procedures,  parameters and locals:
@@ -712,10 +506,7 @@ GetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 GetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetConsoleScreenBufferInfo . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetDateTime  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-<<<<<<< HEAD
-=======
-GetInput . . . . . . . . . . . .	P Near	 000000EF _TEXT	Length= 00000049 Public STDCALL
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+GetInput . . . . . . . . . . . .	P Near	 00000206 _TEXT	Length= 0000004C Public STDCALL
 GetLocalTime . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetMseconds  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetNumberOfConsoleInputEvents  .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -762,44 +553,29 @@ WriteFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteHex . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteInt . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-<<<<<<< HEAD
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001EA Public STDCALL
+initTextArea . . . . . . . . . .	P Near	 000001E3 _TEXT	Length= 00000023 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001E3 Public STDCALL
   write_in_file  . . . . . . . .	L Near	 0000011F _TEXT	
-  read_from_file . . . . . . . .	L Near	 00000132 _TEXT	
-  QuitNow  . . . . . . . . . . .	L Near	 000001A2 _TEXT	
-=======
-initTextArea . . . . . . . . . .	P Near	 000000CC _TEXT	Length= 00000023 Public STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000000CC Public STDCALL
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+  read_from_file . . . . . . . .	L Near	 0000012B _TEXT	
+  QuitNow  . . . . . . . . . . .	L Near	 0000019B _TEXT	
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
-<<<<<<< HEAD
-??0000 . . . . . . . . . . . . .	Byte	 00001443 _DATA	
-??0001 . . . . . . . . . . . . .	Byte	 00001464 _DATA	
-??0002 . . . . . . . . . . . . .	Byte	 00001485 _DATA	
-??0003 . . . . . . . . . . . . .	Byte	 000014A6 _DATA	
-??0004 . . . . . . . . . . . . .	Byte	 000014C7 _DATA	
-??0005 . . . . . . . . . . . . .	Byte	 000014E8 _DATA	
-??0006 . . . . . . . . . . . . .	Byte	 00001509 _DATA	
-??0007 . . . . . . . . . . . . .	Byte	 0000152A _DATA	
-??0008 . . . . . . . . . . . . .	Byte	 00001534 _DATA	
-??0009 . . . . . . . . . . . . .	Byte	 00001537 _DATA	
-??000A . . . . . . . . . . . . .	Byte	 0000155E _DATA	
-??000B . . . . . . . . . . . . .	Byte	 00001576 _DATA	
-=======
-??0000 . . . . . . . . . . . . .	Byte	 0000005A _DATA	
-??0001 . . . . . . . . . . . . .	Byte	 0000007B _DATA	
-??0002 . . . . . . . . . . . . .	Byte	 000000A1 _DATA	
-??0003 . . . . . . . . . . . . .	Byte	 000000C2 _DATA	
-??0004 . . . . . . . . . . . . .	Byte	 000000E3 _DATA	
-??0005 . . . . . . . . . . . . .	Byte	 00000104 _DATA	
-??0006 . . . . . . . . . . . . .	Byte	 00000125 _DATA	
-??0007 . . . . . . . . . . . . .	Byte	 00000146 _DATA	
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+??0000 . . . . . . . . . . . . .	Byte	 00001447 _DATA	
+??0001 . . . . . . . . . . . . .	Byte	 00001468 _DATA	
+??0002 . . . . . . . . . . . . .	Byte	 00001489 _DATA	
+??0003 . . . . . . . . . . . . .	Byte	 000014AA _DATA	
+??0004 . . . . . . . . . . . . .	Byte	 000014CB _DATA	
+??0005 . . . . . . . . . . . . .	Byte	 000014EC _DATA	
+??0006 . . . . . . . . . . . . .	Byte	 0000150D _DATA	
+??0007 . . . . . . . . . . . . .	Byte	 0000152E _DATA	
+??0008 . . . . . . . . . . . . .	Byte	 00001538 _DATA	
+??0009 . . . . . . . . . . . . .	Byte	 0000153B _DATA	
+??000A . . . . . . . . . . . . .	Byte	 00001562 _DATA	
+??000B . . . . . . . . . . . . .	Byte	 00001583 _DATA	
 @CodeSize  . . . . . . . . . . .	Number	 00000000h   
 @DataSize  . . . . . . . . . . .	Number	 00000000h   
 @Interface . . . . . . . . . . .	Number	 00000003h   
@@ -809,11 +585,7 @@ Symbols:
 @fardata?  . . . . . . . . . . .	Text   	 FLAT
 @fardata . . . . . . . . . . . .	Text   	 FLAT
 @stack . . . . . . . . . . . . .	Text   	 FLAT
-<<<<<<< HEAD
 BUFSIZE  . . . . . . . . . . . .	Number	 00001388h   
-=======
-BufSize  . . . . . . . . . . . .	Number	 00000050h   
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
 CREATE_ALWAYS  . . . . . . . . .	Number	 00000002h   
 CREATE_NEW . . . . . . . . . . .	Number	 00000001h   
 CreateFile . . . . . . . . . . .	Text   	 CreateFileA
@@ -857,10 +629,7 @@ GENERIC_READ . . . . . . . . . .	Number	 -80000000h
 GENERIC_WRITE  . . . . . . . . .	Number	 40000000h   
 INVALID_HANDLE_VALUE . . . . . .	Number	 -00000001h   
 KEY_EVENT  . . . . . . . . . . .	Number	 00000001h   
-<<<<<<< HEAD
 MAX  . . . . . . . . . . . . . .	Number	 00000080h   
-=======
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
 MENU_EVENT . . . . . . . . . . .	Number	 00000008h   
 MOUSE_EVENT  . . . . . . . . . .	Number	 00000002h   
 NULL . . . . . . . . . . . . . .	Number	 00000000h   
@@ -880,26 +649,17 @@ WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
-<<<<<<< HEAD
 buffer . . . . . . . . . . . . .	Byte	 00000091 _DATA	
-byteCount  . . . . . . . . . . .	DWord	 0000143E _DATA	
-bytesRead  . . . . . . . . . . .	DWord	 00001419 _DATA	
+byteCount  . . . . . . . . . . .	DWord	 00001442 _DATA	
+bytesRead  . . . . . . . . . . .	DWord	 0000141D _DATA	
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
-errMsg . . . . . . . . . . . . .	Byte	 0000141D _DATA	
+errMsg . . . . . . . . . . . . .	Byte	 00001421 _DATA	
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
-fileHandle . . . . . . . . . . .	DWord	 0000143A _DATA	
-filename . . . . . . . . . . . .	Byte	 00001430 _DATA	
+fileHandle . . . . . . . . . . .	DWord	 0000143E _DATA	
+filename . . . . . . . . . . . .	Byte	 00001434 _DATA	
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
-key  . . . . . . . . . . . . . .	Byte	 00001442 _DATA	
-=======
-buffer . . . . . . . . . . . . .	Byte	 00000000 _DATA	
-bytesRead  . . . . . . . . . . .	DWord	 00000056 _DATA	
-cyan . . . . . . . . . . . . . .	Number	 00000003h   
-exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
-gray . . . . . . . . . . . . . .	Number	 00000008h   
-green  . . . . . . . . . . . . .	Number	 00000002h   
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
+key  . . . . . . . . . . . . . .	Byte	 00001446 _DATA	
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
 lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
 lightGray  . . . . . . . . . . .	Number	 00000007h   
@@ -907,14 +667,10 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-<<<<<<< HEAD
 msg  . . . . . . . . . . . . . .	Byte	 00000081 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
+stdInHandle  . . . . . . . . . .	DWord	 00001419 _DATA	
 stringIn . . . . . . . . . . . .	Byte	 00000000 _DATA	
-=======
-red  . . . . . . . . . . . . . .	Number	 00000004h   
-stdInHandle  . . . . . . . . . .	DWord	 00000052 _DATA	
->>>>>>> a1379edde128b6ba83099ef33791085e4c6d48d8
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
 
