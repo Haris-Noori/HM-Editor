@@ -83,6 +83,7 @@ main PROC;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
       call initTextArea
       call GetInput
 
+    
 
       jmp QuitNow
     ;...WRITE FILE CODE ENDS HERE.......................................................
