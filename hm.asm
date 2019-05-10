@@ -28,6 +28,7 @@ INCLUDELIB user32.lib
     MAX = 128                    ;max chars to read
     stringIn BYTE MAX+1 DUP (?)  ;room for null  
     msg BYTE "Code run time: ",0  
+    t1 DWORD ?
 
 
     ;        DATA for output file
@@ -58,7 +59,7 @@ INCLUDELIB user32.lib
 .code 
 main PROC
     call GetMseconds
-    mov ebx, eax
+    mov t1, eax
 
     call ClrScr
     mGotoxy 30, 8
@@ -124,6 +125,7 @@ main PROC
       mov edx, OFFSET msg
       call WriteString
 
+      mov ebx, t1
       call GetMseconds
       sub eax, ebx
       call WriteInt
