@@ -1,14 +1,26 @@
-;GHAURI        HARIS
-;BufSize       BUFSIZE
-;buffer        buffer
-;stdInHandle   fileHnadle
-;bytesRead     bytesRead 
-
+;-----------------------------------------------;
+;                                               ;
+;               HM-Editor                       ;
+;                                               ;
+;   A simulation of a simple text editor        ;
+;   Which allows you to (1) Read a file         ;
+;   (2) append into a read file                 ;
+;   (3) creat and edit contents of a new file   ;
+;-----------------------------------------------;
+;                                               ;
+;   Created By : Mubeen Ghauri P17-6107         ;
+;                Haris Nooori  P17-6003         ;
+;                                               ;
+;        As our Semester Project for:           ;
+;  Computer Organization And Assembly Language  ;
+;                FTY Fall 2019                  ; 
+;                                               ;
+;-----------------------------------------------;
 
 include irvine32.inc
 include macros.inc
 INCLUDELIB user32.lib
-;includelib irvine32.lib
+
 
 ;________________________DATA SEGMENT_______________________________________|
 .data
@@ -18,23 +30,33 @@ INCLUDELIB user32.lib
     msg BYTE "Code run time: ",0  
 
 
-    ;DATA for output file..................................
-    BUFSIZE = 5000
-    buffer BYTE BUFSIZE DUP(?)
+    ;        DATA for output file
+
+    BUFSIZE = 50
+    buffer BYTE BUFSIZE DUP(0)
+    buffer2 BYTE BUFSIZE DUP(0)
+    tempBuff BYTE BUFSIZE*2 DUP(?)
     stdInHandle DWORD ?
     bytesRead DWORD ?
 
     errMsg BYTE "Cannot open file",0dh,0ah,0
-    filename     BYTE "haris.txt",0
-    fileHandle   DWORD ?	; handle to output file
+    filename     BYTE "input.txt",0
+    file2  BYTE "output.txt",0
+    fileHandle   DWORD ?	    ; handle to output file
     byteCount    DWORD ?    	; number of bytes written
-    ;.....................................................
+   
+    bytesWritten DWORD ?
+
+    ;Data for console write------------------------------
+    outHandle DWORD ?
+    cellsWritten DWORD 0
+    xyPos COORD <0,4>
 
     key BYTE ?
 
-;___________________________CODE SEGMENT_____________________________________|
+;___________________________CODE SEGMENT_____________________________________
 .code 
-main PROC;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+main PROC
     call GetMseconds
     mov ebx, eax
 
@@ -71,49 +93,53 @@ main PROC;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     call ReadChar
     mov key, al
 
-    cmp key, "Y"            ;READ OR WRITE
+    cmp key, "y"            ;READ OR WRITE
     je read_from_file
     jmp write_in_file
 
-
-
-
     write_in_file:
-    ;...WRITE FILE CODE STARTS HERE.......................................................
+    ;WRITE FILE CODE STARTS HERE
+      call ClrScr
       call initTextArea
       call GetInput
 
     
 
       jmp QuitNow
-    ;...WRITE FILE CODE ENDS HERE.......................................................
+    ;WRITE FILE CODE ENDS HERE
 
     read_from_file:       
-    ;READ FILE CODE STARTS HERE.......................................................
+      call ClrScr
       call GetOutput
     
-    ;............READ FILE CODE ENDS HERE........................................................
 
     QuitNow:
-    mGotoxy 0, 18
-    mWriteLn "Press Enter to exit the Program "
-    call WaitMsg
-    call ClrScr
+      mGotoxy 0, 18
+      mWriteLn "Press Enter to exit the Program "
+      call WaitMsg
+      call ClrScr
 
     
-    call crlf
-    mov edx, OFFSET msg
-    call WriteString
+      call crlf
+      mov edx, OFFSET msg
+      call WriteString
 
-    call GetMseconds
-    sub eax, ebx
-    call WriteInt
+      call GetMseconds
+      sub eax, ebx
+      call WriteInt
 
 
-exit
-main ENDP;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    exit
+main ENDP
 
-initTextArea PROC;..................................
+initTextArea PROC
+
+    ;-----------------------------------------
+    ;  procedure to initialise the console   -      
+    ;  with a starting text.                 -
+    ;  procedure is used in this case to     -
+    ;  keep a clean main procedure           -
+    ;-----------------------------------------
 
 	mGotoxy 30, 2
 	mWrite "Start Entering Text !!!"
@@ -121,42 +147,40 @@ initTextArea PROC;..................................
 
 	ret
 
-initTextArea ENDP;.......................................
+initTextArea ENDP
 
 GetInput PROC;.....................................................
+
+    ;-------------------------------------
+    ;  Read contents of the console      -
+    ;  load the contents into 'buffer2'  -
+    ;  call writeF to write the contents -
+    ;  into a specified output file      - 
+    ;-------------------------------------
 
 	; Get handle to standard input
 	INVOKE GetStdHandle, STD_INPUT_HANDLE
 	mov stdInHandle,eax
 
 	; Wait for user input
-	INVOKE ReadConsole, stdInHandle, ADDR buffer,
+	INVOKE ReadConsole, stdInHandle, ADDR buffer2,
 	  BUFSIZE, ADDR bytesRead, 0
 
-	; Display the buffer
-	;mov  esi,OFFSET buffer
-	;mov  ecx,16	; 16 bytes
-	;mov  ebx,TYPE buffer
-	;call DumpMem
-
-
-	;printing buffer
-
-	call crlf 
-	call crlf
-
-	mov edx, offset buffer
-	call writestring
-	call crlf
-	mov eax, bytesRead
-	call writedec
+    call writeF
 
 	ret
 GetInput ENDP;....................................................
 
 GetOutput PROC;..................................................................
 
-  INVOKE CreateFile,
+    ;------------------------------------------
+    ;  Read contents of file specified        -
+    ;  load the contents into 'buffer'        -
+    ;  call loadConsoleText to load contents  -
+    ;  of buffer onto the console             -
+    ;------------------------------------------
+
+    INVOKE CreateFile,
 	  ADDR filename, GENERIC_READ, DO_NOT_SHARE, NULL,
 	  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
 
@@ -171,18 +195,174 @@ GetOutput PROC;.................................................................
     INVOKE ReadFile,		; write text to file
 	    fileHandle,		; file handle
 	    ADDR buffer,		; buffer pointer
-	    bufSize,		; number of bytes to write
-	    ADDR byteCount,		; number of bytes written
+	    bufSize,		; number of bytes to read
+	    ADDR byteCount,		; number of bytes read
 	    0		; overlapped execution flag
 
     INVOKE CloseHandle, fileHandle
 
     mov esi,byteCount		; insert null terminator
     mov buffer[esi],0		; into buffer
-    mov edx,OFFSET buffer		; display the buffer
-    call WriteString
+    inc esi
+    mov buffer[esi],0
+    inc esi
+    mov buffer[esi],0
+    ;mov edx,OFFSET buffer		; display the buffer
+    ;call WriteString
+
+    call loadConsoleText
+
+    call GetInput
 
     ret
 GetOutput ENDP;.......................................................................
+
+
+joinBuff PROC
+
+    ;---------------------------------------
+    ;  procedure to join the contents of   - 
+    ;  buffer (inputFileContentsBuffer)    - 
+    ;  and                                 - 
+    ;  buffer2 (consoleContentsBuffer)     -
+    ;  into tempBuff.                      - 
+    ;  the contents of tempBuff are then   - 
+    ;  written to output file              -
+    ;---------------------------------------
+
+
+    call crlf
+    call crlf
+
+    mov ecx, byteCount    ; number of bytes read from file
+
+    
+    mov ebx, 0
+    mov edx, 0
+
+    mov al,  buffer[edx]
+
+    .IF al == 0
+        jmp j2
+    .ENDIF
+
+    L1:
+        mov al,  buffer[edx]
+        mov tempBuff[ebx], al
+        call writechar
+        ;call crlf
+        inc al
+        inc ebx
+        inc edx
+
+        .IF al == 0
+            jmp j2
+        .ENDIF
+
+        .IF ebx == byteCount
+            jmp j2
+        .ENDIF
+
+        
+    loop L1
+
+    j2:
+        mov al, buffer2
+        mov edx, 0
+        mov ecx, bytesRead          ; number of bytes read from console
+
+        L2:
+            mov al,  buffer2[edx]
+            mov tempBuff[ebx], al
+            call writechar
+            inc edx
+            inc ebx
+
+
+            .IF ebx == bytesRead
+                jmp quitJoin
+            .ENDIF
+
+        loop l2
+
+    quitJoin:
+
+    mov edx, offset tempBuff
+    call writestring
+    call crlf
+
+    ret
+
+joinBuff ENDP
+
+writeF PROC;---------------------------------------------
+    
+    ;----------------------------------------------
+    ; procedure to write contents of buffer into  -
+    ; a specified file                            -
+    ; To be used with INVOKE directive            - 
+    ;----------------------------------------------
+
+    call joinBuff
+
+    ; Creating file
+
+    INVOKE CreateFile,
+      ADDR file2, GENERIC_WRITE, DO_NOT_SHARE, NULL,
+      CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0
+
+    mov filehandle, eax
+
+    ; check to see if file is created succesfuly
+    ; if not then an error msg is printed to the screen
+
+    .IF eax == INVALID_HANDLE_VALUE
+      mov  edx,OFFSET errMsg        ; Display error message
+      call WriteString
+      jmp  QuitNow
+    .ENDIF
+
+    INVOKE WriteFile,       ; write text to file
+        fileHandle,     ; file handle
+        ADDR tempBuff,        ; buffer pointer
+        bufSize*2,       ; number of bytes to write
+        ADDR bytesWritten,      ; number of bytes written
+        0       ; overlapped execution flag
+
+    INVOKE CloseHandle, fileHandle
+    
+    QuitNow:
+
+    ret
+
+writeF ENDP
+
+loadConsoleText PROC
+    
+    ;----------------------------------------------
+    ; load contents of buffer to console          -
+    ; used to load the contents read from file    -      
+    ; to our console output                       -
+    ;----------------------------------------------
+
+    mGotoxy 30,2
+    mWrite "Contents Of File : "
+    
+
+    ; Get the Console standard output handle:
+    INVOKE GetStdHandle,STD_OUTPUT_HANDLE
+    mov outHandle,eax
+
+    ;Write contents of buffer to console
+    INVOKE WriteConsoleOutputCharacter,
+      outHandle, ADDR buffer, BufSize,
+      xyPos, ADDR cellsWritten
+
+    mGotoxy 0, 6
+    mWrite "Enter Text to append into read file : "
+    mGotoxy 0,8
+      ret
+
+loadConsoleText ENDP
 
 end main
