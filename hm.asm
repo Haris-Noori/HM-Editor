@@ -194,8 +194,8 @@ GetOutput PROC;.................................................................
     INVOKE ReadFile,		; write text to file
 	    fileHandle,		; file handle
 	    ADDR buffer,		; buffer pointer
-	    bufSize,		; number of bytes to write
-	    ADDR byteCount,		; number of bytes written
+	    bufSize,		; number of bytes to read
+	    ADDR byteCount,		; number of bytes read
 	    0		; overlapped execution flag
 
     INVOKE CloseHandle, fileHandle
@@ -233,7 +233,7 @@ joinBuff PROC
     call crlf
     call crlf
 
-    mov ecx, byteCount
+    mov ecx, byteCount    ; number of bytes read from file
 
     
     mov ebx, 0
@@ -268,7 +268,7 @@ joinBuff PROC
     j2:
         mov al, buffer2
         mov edx, 0
-        mov ecx, bytesRead
+        mov ecx, bytesRead          ; number of bytes read from console
 
         L2:
             mov al,  buffer2[edx]
