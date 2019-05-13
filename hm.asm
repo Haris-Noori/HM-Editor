@@ -33,7 +33,7 @@ INCLUDELIB user32.lib
 
     ;        DATA for output file
 
-    BUFSIZE = 50
+    BUFSIZE = 80
     buffer BYTE BUFSIZE DUP(0)
     buffer2 BYTE BUFSIZE DUP(0)
     tempBuff BYTE BUFSIZE*2 DUP(?)
