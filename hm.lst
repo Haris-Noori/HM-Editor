@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/13/19 09:36:47
+Microsoft (R) Macro Assembler Version 6.15.8803		    05/13/19 10:58:20
 hm.asm							     Page 1 - 1
 
 
@@ -7,6 +7,7 @@ hm.asm							     Page 1 - 1
 				;               HM-Editor                       ;
 				;                                               ;
 				;   A simulation of a simple text editor        ;
+				;   (just like vim, nano etc)                   ;
 				;   Which allows you to (1) Read a file         ;
 				;   (2) append into a read file                 ;
 				;   (3) creat and edit contents of a new file   ;
@@ -408,7 +409,7 @@ hm.asm							     Page 1 - 1
 					INVOKE ReadConsole, stdInHandle, ADDR buffer2,
 					  BUFSIZE, ADDR bytesRead, 0
 
- 000001D3  E8 0000010A		    call writeF
+ 000001D3  E8 00000122		    call writeF
 
  000001D8  C3				ret
  000001D9			GetInput ENDP;....................................................
@@ -455,7 +456,7 @@ hm.asm							     Page 1 - 1
 				    ;mov edx,OFFSET buffer		; display the buffer
 				    ;call WriteString
 
- 0000024B  E8 000000F1		    call loadConsoleText
+ 0000024B  E8 00000109		    call loadConsoleText
 
  00000250  E8 FFFFFF59		    call GetInput
 
@@ -488,59 +489,87 @@ hm.asm							     Page 1 - 1
  00000270  8A 82 00000095 R	    mov al,  buffer[edx]
 
 				    .IF al == 0
- 0000027A  EB 27		        jmp j2
+ 0000027A  EB 22		        jmp j2
 				    .ENDIF
 
  0000027C			    L1:
  0000027C  8A 82 00000095 R	        mov al,  buffer[edx]
  00000282  88 83 00000135 R	        mov tempBuff[ebx], al
- 00000288  E8 00000000 E	        call writechar
+				        ;call writechar
 				        ;call crlf
- 0000028D  FE C0		        inc al
- 0000028F  43			        inc ebx
- 00000290  42			        inc edx
+ 00000288  FE C0		        inc al
+ 0000028A  43			        inc ebx
+ 0000028B  42			        inc edx
 
 				        .IF al == 0
- 00000295  EB 0C		            jmp j2
+ 00000290  EB 0C		            jmp j2
 				        .ENDIF
 
 				        .IF ebx == byteCount
- 0000029F  EB 02		            jmp j2
+ 0000029A  EB 02		            jmp j2
 				        .ENDIF
 
 				        
- 000002A1  E2 D9		    loop L1
+ 0000029C  E2 DE		    loop L1
 
- 000002A3			    j2:
- 000002A3  A0 000000E5 R	        mov al, buffer2
- 000002A8  BA 00000000		        mov edx, 0
- 000002AD  8B 0D 000001D9 R	        mov ecx, bytesRead          ; number of bytes read from console
+ 0000029E			    j2:
+ 0000029E  A0 000000E5 R	        mov al, buffer2
+ 000002A3  BA 00000000		        mov edx, 0
+ 000002A8  8B 0D 000001D9 R	        mov ecx, bytesRead          ; number of bytes read from console
 
- 000002B3			        L2:
- 000002B3  8A 82 000000E5 R	            mov al,  buffer2[edx]
- 000002B9  88 83 00000135 R	            mov tempBuff[ebx], al
- 000002BF  E8 00000000 E	            call writechar
- 000002C4  42			            inc edx
- 000002C5  43			            inc ebx
+ 000002AE			        L2:
+ 000002AE  8A 82 000000E5 R	            mov al,  buffer2[edx]
+ 000002B4  88 83 00000135 R	            mov tempBuff[ebx], al
+				          ;  call writechar
+ 000002BA  42			            inc edx
+ 000002BB  43			            inc ebx
 
 
 				            .IF ebx == bytesRead
- 000002CE  EB 02		                jmp quitJoin
+ 000002C4  EB 02		                jmp quitJoin
 				            .ENDIF
 
- 000002D0  E2 E1		        loop l2
+ 000002C6  E2 E6		        loop l2
 
- 000002D2			    quitJoin:
+ 000002C8			    quitJoin:
 
- 000002D2  BA 00000135 R	    mov edx, offset tempBuff
- 000002D7  E8 00000000 E	    call writestring
- 000002DC  E8 00000000 E	    call crlf
+				    mGotoxy 0,12
+ 000002C8  52		     1		push edx
+ 000002C9  B6 0C	     1	    mov  dh,12
+ 000002CB  B2 00	     1	    mov  dl,0
+ 000002CD  E8 00000000 E     1		call Gotoxy
+ 000002D2  5A		     1		pop  edx
+				    mWrite "Text to be written into  output file : "
+ 00000372		     1		.data				
+ 00000372 54 65 78 74 20     1		??000C BYTE "Text to be written into  output file : ",0		
+	   74 6F 20 62 65
+	   20 77 72 69 74
+	   74 65 6E 20 69
+	   6E 74 6F 20 20
+	   6F 75 74 70 75
+	   74 20 66 69 6C
+	   65 20 3A 20 00
+ 000002D3		     1		.code
+ 000002D3  52		     1		push edx
+ 000002D4  BA 00000372 R     1		mov  edx,OFFSET ??000C
+ 000002D9  E8 00000000 E     1		call Writestring
+ 000002DE  5A		     1		pop  edx
+				    mGotoxy 0,14
+ 000002DF  52		     1		push edx
+ 000002E0  B6 0E	     1	    mov  dh,14
+ 000002E2  B2 00	     1	    mov  dl,0
+ 000002E4  E8 00000000 E     1		call Gotoxy
+ 000002E9  5A		     1		pop  edx
 
- 000002E1  C3			    ret
+ 000002EA  BA 00000135 R	     mov edx, offset tempBuff
+ 000002EF  E8 00000000 E	     call writestring
+ 000002F4  E8 00000000 E	     call crlf
 
- 000002E2			joinBuff ENDP
+ 000002F9  C3			    ret
 
- 000002E2			writeF PROC;---------------------------------------------
+ 000002FA			joinBuff ENDP
+
+ 000002FA			writeF PROC;---------------------------------------------
 				    
 				    ;----------------------------------------------
 				    ; procedure to write contents of buffer into  -
@@ -548,7 +577,7 @@ hm.asm							     Page 1 - 1
 				    ; To be used with INVOKE directive            - 
 				    ;----------------------------------------------
 
- 000002E2  E8 FFFFFF6F		    call joinBuff
+ 000002FA  E8 FFFFFF57		    call joinBuff
 
 				    ; Creating file
 
@@ -556,15 +585,15 @@ hm.asm							     Page 1 - 1
 				      ADDR file2, GENERIC_WRITE, DO_NOT_SHARE, NULL,
 				      CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0
 
- 00000303  A3 00000205 R	    mov filehandle, eax
+ 0000031B  A3 00000205 R	    mov filehandle, eax
 
 				    ; check to see if file is created succesfuly
 				    ; if not then an error msg is printed to the screen
 
 				    .IF eax == INVALID_HANDLE_VALUE
- 0000030D  BA 000001DD R	      mov  edx,OFFSET errMsg        ; Display error message
- 00000312  E8 00000000 E	      call WriteString
- 00000317  EB 27		      jmp  QuitNow
+ 00000325  BA 000001DD R	      mov  edx,OFFSET errMsg        ; Display error message
+ 0000032A  E8 00000000 E	      call WriteString
+ 0000032F  EB 27		      jmp  QuitNow
 				    .ENDIF
 
 				    INVOKE WriteFile,       ; write text to file
@@ -576,13 +605,13 @@ hm.asm							     Page 1 - 1
 
 				    INVOKE CloseHandle, fileHandle
 				    
- 00000340			    QuitNow:
+ 00000358			    QuitNow:
 
- 00000340  C3			    ret
+ 00000358  C3			    ret
 
- 00000341			writeF ENDP
+ 00000359			writeF ENDP
 
- 00000341			loadConsoleText PROC
+ 00000359			loadConsoleText PROC
 				    
 				    ;----------------------------------------------
 				    ; load contents of buffer to console          -
@@ -591,27 +620,27 @@ hm.asm							     Page 1 - 1
 				    ;----------------------------------------------
 
 				    mGotoxy 30,2
- 00000341  52		     1		push edx
- 00000342  B6 02	     1	    mov  dh,2
- 00000344  B2 1E	     1	    mov  dl,30
- 00000346  E8 00000000 E     1		call Gotoxy
- 0000034B  5A		     1		pop  edx
+ 00000359  52		     1		push edx
+ 0000035A  B6 02	     1	    mov  dh,2
+ 0000035C  B2 1E	     1	    mov  dl,30
+ 0000035E  E8 00000000 E     1		call Gotoxy
+ 00000363  5A		     1		pop  edx
 				    mWrite "Contents Of File : "
- 00000372		     1		.data				
- 00000372 43 6F 6E 74 65     1		??000C BYTE "Contents Of File : ",0		
+ 0000039A		     1		.data				
+ 0000039A 43 6F 6E 74 65     1		??000D BYTE "Contents Of File : ",0		
 	   6E 74 73 20 4F
 	   66 20 46 69 6C
 	   65 20 3A 20 00
- 0000034C		     1		.code
- 0000034C  52		     1		push edx
- 0000034D  BA 00000372 R     1		mov  edx,OFFSET ??000C
- 00000352  E8 00000000 E     1		call Writestring
- 00000357  5A		     1		pop  edx
+ 00000364		     1		.code
+ 00000364  52		     1		push edx
+ 00000365  BA 0000039A R     1		mov  edx,OFFSET ??000D
+ 0000036A  E8 00000000 E     1		call Writestring
+ 0000036F  5A		     1		pop  edx
 				    
 
 				    ; Get the Console standard output handle:
 				    INVOKE GetStdHandle,STD_OUTPUT_HANDLE
- 0000035F  A3 00000211 R	    mov outHandle,eax
+ 00000377  A3 00000211 R	    mov outHandle,eax
 
 				    ;Write contents of buffer to console
 				    INVOKE WriteConsoleOutputCharacter,
@@ -619,14 +648,14 @@ hm.asm							     Page 1 - 1
 				      xyPos, ADDR cellsWritten
 
 				    mGotoxy 0, 6
- 00000381  52		     1		push edx
- 00000382  B6 06	     1	    mov  dh,6
- 00000384  B2 00	     1	    mov  dl,0
- 00000386  E8 00000000 E     1		call Gotoxy
- 0000038B  5A		     1		pop  edx
+ 00000399  52		     1		push edx
+ 0000039A  B6 06	     1	    mov  dh,6
+ 0000039C  B2 00	     1	    mov  dl,0
+ 0000039E  E8 00000000 E     1		call Gotoxy
+ 000003A3  5A		     1		pop  edx
 				    mWrite "Enter Text to append into read file : "
- 00000386		     1		.data				
- 00000386 45 6E 74 65 72     1		??000D BYTE "Enter Text to append into read file : ",0		
+ 000003AE		     1		.data				
+ 000003AE 45 6E 74 65 72     1		??000E BYTE "Enter Text to append into read file : ",0		
 	   20 54 65 78 74
 	   20 74 6F 20 61
 	   70 70 65 6E 64
@@ -634,23 +663,23 @@ hm.asm							     Page 1 - 1
 	   20 72 65 61 64
 	   20 66 69 6C 65
 	   20 3A 20 00
- 0000038C		     1		.code
- 0000038C  52		     1		push edx
- 0000038D  BA 00000386 R     1		mov  edx,OFFSET ??000D
- 00000392  E8 00000000 E     1		call Writestring
- 00000397  5A		     1		pop  edx
+ 000003A4		     1		.code
+ 000003A4  52		     1		push edx
+ 000003A5  BA 000003AE R     1		mov  edx,OFFSET ??000E
+ 000003AA  E8 00000000 E     1		call Writestring
+ 000003AF  5A		     1		pop  edx
 				    mGotoxy 0,8
- 00000398  52		     1		push edx
- 00000399  B6 08	     1	    mov  dh,8
- 0000039B  B2 00	     1	    mov  dl,0
- 0000039D  E8 00000000 E     1		call Gotoxy
- 000003A2  5A		     1		pop  edx
- 000003A3  C3			      ret
+ 000003B0  52		     1		push edx
+ 000003B1  B6 08	     1	    mov  dh,8
+ 000003B3  B2 00	     1	    mov  dl,0
+ 000003B5  E8 00000000 E     1		call Gotoxy
+ 000003BA  5A		     1		pop  edx
+ 000003BB  C3			      ret
 
- 000003A4			loadConsoleText ENDP
+ 000003BC			loadConsoleText ENDP
 
 				end main
-Microsoft (R) Macro Assembler Version 6.15.8803		    05/13/19 09:36:47
+Microsoft (R) Macro Assembler Version 6.15.8803		    05/13/19 10:58:20
 hm.asm							     Symbols 2 - 1
 
 
@@ -717,8 +746,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 000003AD DWord	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000003A4 DWord	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 000003D5 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000003BC DWord	  Public  'CODE'	
 
 
 Procedures,  parameters and locals:
@@ -789,18 +818,18 @@ WriteHex . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteInt . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 initTextArea . . . . . . . . . .	P Near	 0000018B _TEXT	Length= 00000023 Public STDCALL
-joinBuff . . . . . . . . . . . .	P Near	 00000256 _TEXT	Length= 0000008C Public STDCALL
+joinBuff . . . . . . . . . . . .	P Near	 00000256 _TEXT	Length= 000000A4 Public STDCALL
   L1 . . . . . . . . . . . . . .	L Near	 0000027C _TEXT	
-  j2 . . . . . . . . . . . . . .	L Near	 000002A3 _TEXT	
-  L2 . . . . . . . . . . . . . .	L Near	 000002B3 _TEXT	
-  quitJoin . . . . . . . . . . .	L Near	 000002D2 _TEXT	
-loadConsoleText  . . . . . . . .	P Near	 00000341 _TEXT	Length= 00000063 Public STDCALL
+  j2 . . . . . . . . . . . . . .	L Near	 0000029E _TEXT	
+  L2 . . . . . . . . . . . . . .	L Near	 000002AE _TEXT	
+  quitJoin . . . . . . . . . . .	L Near	 000002C8 _TEXT	
+loadConsoleText  . . . . . . . .	P Near	 00000359 _TEXT	Length= 00000063 Public STDCALL
 main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000018B Public STDCALL
   write_in_file  . . . . . . . .	L Near	 00000122 _TEXT	
   read_from_file . . . . . . . .	L Near	 00000133 _TEXT	
   QuitNow  . . . . . . . . . . .	L Near	 0000013D _TEXT	
-writeF . . . . . . . . . . . . .	P Near	 000002E2 _TEXT	Length= 0000005F Public STDCALL
-  QuitNow  . . . . . . . . . . .	L Near	 00000340 _TEXT	
+writeF . . . . . . . . . . . . .	P Near	 000002FA _TEXT	Length= 0000005F Public STDCALL
+  QuitNow  . . . . . . . . . . .	L Near	 00000358 _TEXT	
 
 
 Symbols:
@@ -820,7 +849,8 @@ Symbols:
 ??000A . . . . . . . . . . . . .	Byte	 00000339 _DATA	
 ??000B . . . . . . . . . . . . .	Byte	 0000035A _DATA	
 ??000C . . . . . . . . . . . . .	Byte	 00000372 _DATA	
-??000D . . . . . . . . . . . . .	Byte	 00000386 _DATA	
+??000D . . . . . . . . . . . . .	Byte	 0000039A _DATA	
+??000E . . . . . . . . . . . . .	Byte	 000003AE _DATA	
 @CodeSize  . . . . . . . . . . .	Number	 00000000h   
 @DataSize  . . . . . . . . . . .	Number	 00000000h   
 @Interface . . . . . . . . . . .	Number	 00000003h   

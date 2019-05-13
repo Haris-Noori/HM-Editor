@@ -3,6 +3,7 @@
 ;               HM-Editor                       ;
 ;                                               ;
 ;   A simulation of a simple text editor        ;
+;   (just like vim, nano etc)                   ;
 ;   Which allows you to (1) Read a file         ;
 ;   (2) append into a read file                 ;
 ;   (3) creat and edit contents of a new file   ;
@@ -251,7 +252,7 @@ joinBuff PROC
     L1:
         mov al,  buffer[edx]
         mov tempBuff[ebx], al
-        call writechar
+        ;call writechar
         ;call crlf
         inc al
         inc ebx
@@ -276,7 +277,7 @@ joinBuff PROC
         L2:
             mov al,  buffer2[edx]
             mov tempBuff[ebx], al
-            call writechar
+          ;  call writechar
             inc edx
             inc ebx
 
@@ -289,9 +290,13 @@ joinBuff PROC
 
     quitJoin:
 
-    mov edx, offset tempBuff
-    call writestring
-    call crlf
+    mGotoxy 0,12
+    mWrite "Text to be written into  output file : "
+    mGotoxy 0,14
+
+     mov edx, offset tempBuff
+     call writestring
+     call crlf
 
     ret
 
